@@ -1,13 +1,15 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("../database/connection");
 
-const Curso = connection.define("cursos", {
+const Destino = connection.define("destino", {
   nome: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   duracao_horas: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 });
 
-module.exports = Curso;
+module.exports = Destino;
