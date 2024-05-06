@@ -6,9 +6,21 @@ const Destino = connection.define("destino", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  duracao_horas: {
+  descricao: {
+    type: DataTypes.TEXT,
+  },
+  localidade: {
+    type: DataTypes.STRING,
+  },
+  coordenadas: {
+    type: DataTypes.STRING,
+  },
+  usuarioId: { 
     type: DataTypes.INTEGER,
-    allowNull: false
+    references: {
+      model: 'Usuario', 
+      key: 'id',
+    },
   },
 });
 
