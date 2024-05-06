@@ -15,7 +15,7 @@ const Destino = connection.define("destino", {
   coordenadas: {
     type: DataTypes.STRING,
   },
-  usuarioId: { 
+  usuario_id: { 
     type: DataTypes.INTEGER,
     references: {
       model: 'Usuario', 
