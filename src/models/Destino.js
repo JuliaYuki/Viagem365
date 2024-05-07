@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { connection } = require("../database/connection");
 
 const Destino = connection.define("destino", {
-  nome: {
+  nome_destino: {
     type: DataTypes.STRING,
     allowNull: false
   },
