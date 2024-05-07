@@ -2,13 +2,25 @@ const { DataTypes } = require("sequelize");
 const { connection } = require("../database/connection");
 
 const Destino = connection.define("destino", {
-  nome: {
+  nome_destino: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  duracao_horas: {
+  descricao: {
+    type: DataTypes.TEXT,
+  },
+  localidade: {
+    type: DataTypes.STRING,
+  },
+  coordenadas: {
+    type: DataTypes.STRING,
+  },
+  usuario_id: { 
     type: DataTypes.INTEGER,
-    allowNull: false
+    references: {
+      model: 'Usuario', 
+      key: 'id',
+    },
   },
 });
 
