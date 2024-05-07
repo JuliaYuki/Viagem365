@@ -8,22 +8,21 @@ const Usuario = connection.define("usuario", {
   },
   genero: {
     type: DataTypes.STRING,
-    allowNull: false
   },
-  CPF: {
+  cpf: {
     type: DataTypes.STRING,
+    unique: true,
     allowNull: false
   },
   data_nascimento: {
     type: DataTypes.DATE,
-    allowNull: false
   },
   endereco: {
     type: DataTypes.STRING,
-    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
+    unique: true,
     allowNull: false
   },
   password: {
