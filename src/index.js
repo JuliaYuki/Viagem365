@@ -1,3 +1,3 @@
-const { Server } = require("./server");
+const { Server } = require('./server')
 
-new Server();
+new Server() // Instanciação da classe Server para executar o servidor

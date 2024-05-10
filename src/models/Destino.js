@@ -12,13 +12,16 @@ const Destino = connection.define("destino", {
   localidade: {
     type: DataTypes.STRING,
   },
-  coordenadas: {
+  latitude: {
+    type: DataTypes.STRING,
+  },
+  longitude: {
     type: DataTypes.STRING,
   },
   usuario_id: { 
     type: DataTypes.INTEGER,
     references: {
-      model: 'Usuario', 
+      model: 'usuario', 
       key: 'id',
     },
   },

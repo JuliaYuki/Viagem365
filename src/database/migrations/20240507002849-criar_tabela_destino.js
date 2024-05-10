@@ -1,6 +1,12 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('destino', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
       nome_destino: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -11,13 +17,16 @@ module.exports = {
       localidade: {
         type: Sequelize.STRING,
       },
-      coordenadas: {
+      latitude: {
+        type: Sequelize.STRING,
+      },
+      longitude: {
         type: Sequelize.STRING,
       },
       usuario_id: {
         type: Sequelize.INTEGER,
-        refereces: {
-          model: 'Usuario',
+        references: {
+          model: 'usuario',
           key: 'id'
         }
       }, 

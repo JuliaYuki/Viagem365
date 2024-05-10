@@ -12,33 +12,33 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        nome: {
+        name: {
           allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
-        genero: {
+        gender: {
           allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
         cpf: {
           allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
-        data_nascimento: {
+        address: {
           allowNull: false,
-          type: Sequelize.DATE
-        },
-        endereco: {
-          allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
         email: {
           allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
         password: {
           allowNull: false,
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
+        },
+        birth: {
+          allowNull: false,
+          type: Sequelize.DATE,
         },
         createdAt: {
           allowNull: false,
