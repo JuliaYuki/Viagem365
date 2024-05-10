@@ -1,32 +1,33 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('destino', {
+    await queryInterface.createTable('destinos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nome_destino: {
+      destination: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      descricao: {
+      description: {
         type: Sequelize.TEXT,
       }, 
-      localidade: {
+      location: {
         type: Sequelize.STRING,
       },
       latitude: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       longitude: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
-      usuario_id: {
+      user_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: 'usuario',
+          model: 'usuarios',
           key: 'id'
         }
       }, 
@@ -41,6 +42,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('destino');
+    await queryInterface.dropTable('destinos');
   },
 };

@@ -55,32 +55,31 @@ userRoute.post("/", async (req, res) => {
   }
 });
 
-
 userRoute.get("/", async (req, res) => {
   try {
-    // Verifica se há um token de autorização na solicitação
+    
     if (req.headers.authorization) {
-      const token = req.headers.authorization.split(" ")[1]; // Extrai o token da string "Bearer <token>"
-      const decodedToken = verify(token, process.env.SECRET_JWT); // Decodifica o token
+      const token = req.headers.authorization.split(" ")[1]; 
+      const decodedToken = verify(token, process.env.SECRET_JWT); 
       
-      // Verifica se o token é válido
+      
       if (!decodedToken) {
         return res.status(401).json({ message: "Token inválido" });
       }
       
-      const userId = decodedToken.sub; // Obtém o ID do usuário do payload do token
-      const usuario = await Usuario.findByPk(userId); // Busca o usuário no banco de dados usando o ID
+      const userId = decodedToken.sub; 
+      const usuario = await Usuario.findByPk(userId);
 
       if (!usuario) {
         return res.status(404).json({ erro: "Usuário não encontrado" });
       }
 
-      return res.json(usuario); // Retorna o usuário encontrado
+      return res.json(usuario); 
     } else {
-      // Se não houver um token de autorização, busca todos os usuários no banco de dados
+      
       const usuarios = await Usuario.findAll();
 
-      return res.json(usuarios); // Retorna todos os usuários
+      return res.json(usuarios); 
     }
   } catch (error) {
     console.log(error.message);

@@ -2,14 +2,13 @@ const { DataTypes } = require("sequelize");
 const { connection } = require("../database/connection");
 
 const Destino = connection.define("destino", {
-  nome_destino: {
+  destination: {
     type: DataTypes.STRING,
-    allowNull: false
   },
-  descricao: {
+  description: {
     type: DataTypes.TEXT,
   },
-  localidade: {
+  location: {
     type: DataTypes.STRING,
   },
   latitude: {
@@ -18,12 +17,9 @@ const Destino = connection.define("destino", {
   longitude: {
     type: DataTypes.STRING,
   },
-  usuario_id: { 
+  user_id: { 
     type: DataTypes.INTEGER,
-    references: {
-      model: 'usuario', 
-      key: 'id',
-    },
+    allowNull: false
   },
 });
 
