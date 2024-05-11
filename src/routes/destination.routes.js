@@ -104,4 +104,32 @@ destinationRoute.put("/:destino_id", auth, async (req, res) => {
   }
 });
 
+destinationRoute.delete("/:destino_id", auth, async (req, res) => {
+
+  try {
+    const user_id = req.payload.sub;
+    const destino_id = req.params.destino_id;
+
+    const destino = await Destino.findOne({
+      where: {
+        id: destino_id,
+        user_id: user_id,
+      },
+    });
+
+    if (!destino) {
+      return res.status(404).json({ error: "Destino não encontrado!" });
+    }
+
+    await destino.destroy();
+
+    return res.status(204).send();
+  } catch (error) {
+    console.log("Erro ao excluir destino:", error);
+    return res
+      .status(500)
+      .json({ error: "Não foi possível excluir o destino" });
+  }
+})
+
 module.exports = destinationRoute;
