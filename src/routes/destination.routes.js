@@ -91,7 +91,7 @@ destinationRoute.put("/:destino_id", auth, async (req, res) => {
     }
 
     destino.destination = destination;
-    destino.destination = description;
+    destino.description = description;
 
     await destino.save();
 
@@ -105,7 +105,6 @@ destinationRoute.put("/:destino_id", auth, async (req, res) => {
 });
 
 destinationRoute.delete("/:destino_id", auth, async (req, res) => {
-
   try {
     const user_id = req.payload.sub;
     const destino_id = req.params.destino_id;
@@ -130,6 +129,6 @@ destinationRoute.delete("/:destino_id", auth, async (req, res) => {
       .status(500)
       .json({ error: "Não foi possível excluir o destino" });
   }
-})
+});
 
 module.exports = destinationRoute;
