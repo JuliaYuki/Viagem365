@@ -18,6 +18,7 @@
     "nodemon": "^3.1.0",
     "pg": "^8.11.5",
     "pg-connection-string": "^2.6.4",
-    "sequelize": "^6.37.2"
+    "sequelize": "^6.37.2",
+    "yup": "^1.4.0"
   }
 }
