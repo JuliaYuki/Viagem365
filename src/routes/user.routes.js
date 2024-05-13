@@ -142,18 +142,53 @@ userRoute.get("/:id", auth, async (req, res) => {
 userRoute.put("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
+    const { cpf, email } = req.body;
+
+    await userSchema.validate(req.body, { abortEarly: false });
+
     const usuario = await Usuario.findByPk(id);
 
     if (!usuario) {
       return res.status(404).json({ erro: "Usuário não foi encontrado" });
     }
 
+    if (cpf !== usuario.cpf) {
+      const existingUserCPF = await Usuario.findOne({
+        where: {
+          cpf: cpf,
+        },
+      });
+      if (existingUserCPF) {
+        return res.status(400).json({ message: "CPF já cadastrado"})
+      }
+    }
+    
+
+    if (email !== usuario.email){
+      const existingUserEmail = await Usuario.findOne({
+        where: {
+          email: email,
+        }
+      })
+      if (existingUserEmail) {
+        return res.status(400).json({ message: "Email já cadastrado"})
+      }
+    }
+    
     await usuario.update(req.body);
     await usuario.save();
     res.status(200).json({ message: "Alterado com sucesso!" });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ erro: "Erro ao atulizar o usuário" });
+    if (error instanceof yup.ValidationError) {
+      const yupErrors = error.inner.map((e) => ({
+        field: e.path,
+        message: e.message,
+      }));
+      return res.status(400).json({ errors: yupErrors });
+    } else {
+      console.log(error.message);
+      return res.status(500).json({ erro: "Erro ao atualizar o usuário" });
+    }
   }
 });
 
@@ -187,7 +222,6 @@ userRoute.delete("/:id", auth, async (req, res) => {
           "Não é possível excluir o usuário, pois existem destinos associados a ele",
       });
     }
-
 
     await Usuario.destroy({
       where: {
