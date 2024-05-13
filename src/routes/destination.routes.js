@@ -1,27 +1,43 @@
 const { Router } = require("express");
 const Destino = require("../models/Destino");
 const { auth } = require("../middleware/auth");
+const axios = require("axios");
 
 const destinationRoute = new Router();
 
 destinationRoute.post("/", auth, async (req, res) => {
   try {
-    const { destination, description } = req.body;
+    const { destination, description, cep } = req.body;
     const user_id = req.payload.sub;
 
-    if (!destination || !description || !user_id) {
+    if (!destination || !description || !user_id || !cep) {
       return res
         .status(400)
         .json({ message: "Todos os campos são obrigatórios" });
     }
 
-    const novoDestino = await Destino.create({
-      destination,
-      description,
-      user_id,
-    });
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/search?q=${cep}&format=json`
+    );
 
-    return res.status(201).json(novoDestino);
+    if (response.data && response.data.length > 0) {
+      const { lat, lon } = response.data[0];
+
+      const novoDestino = await Destino.create({
+        destination,
+        description,
+        cep,
+        latitude: lat,
+        longitude: lon,
+        user_id,
+      });
+
+      return res.status(201).json(novoDestino);
+    } else {
+      return res
+        .status(404)
+        .json({ error: "Nenhum resultado encontrado para o CEP fornecido." });
+    }
   } catch (error) {
     console.log("Erro ao cadastrar destino:", error);
     return res

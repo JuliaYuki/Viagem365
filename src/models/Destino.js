@@ -8,7 +8,7 @@ const Destino = connection.define("destino", {
   description: {
     type: DataTypes.TEXT,
   },
-  location: {
+  cep: {
     type: DataTypes.STRING,
   },
   latitude: {
