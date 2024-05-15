@@ -17,7 +17,63 @@ const userSchema = yup.object().shape({
   birth: yup.date().required(),
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Usuários
+ *   description: Rotas para gerenciar usuários
+ */
+
 userRoute.post("/", async (req, res) => {
+
+  /**
+ * @swagger
+ * /usuario:
+ *   post:
+ *     summary: Criar um novo usuário
+ *     tags: [Usuários]
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: usuario
+ *         description: Dados do usuário
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *               description: Nome do usuário
+ *             gender:
+ *               type: string
+ *               description: Gênero do usuário
+ *             cpf:
+ *               type: string
+ *               description: CPF do usuário
+ *             address:
+ *               type: string
+ *               description: Endereço do usuário
+ *             email:
+ *               type: string
+ *               description: Email do usuário
+ *             password:
+ *               type: string
+ *               description: Senha do usuário
+ *             birth:
+ *               type: string
+ *               format: date
+ *               description: Data de nascimento do usuário
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *         schema:
+ *           $ref: '#/definitions/Usuario'
+ *       400:
+ *         description: Erro na validação dos dados
+ *       500:
+ *         description: Erro ao criar o usuário
+ */
+
   try {
     await userSchema.validate(req.body, { abortEarly: false });
 
