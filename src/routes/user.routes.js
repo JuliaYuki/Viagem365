@@ -17,63 +17,7 @@ const userSchema = yup.object().shape({
   birth: yup.date().required(),
 });
 
-/**
- * @swagger
- * tags:
- *   name: Usuários
- *   description: Rotas para gerenciar usuários
- */
-
 userRoute.post("/", async (req, res) => {
-
-  /**
- * @swagger
- * /usuario:
- *   post:
- *     summary: Criar um novo usuário
- *     tags: [Usuários]
- *     consumes:
- *       - application/json
- *     parameters:
- *       - in: body
- *         name: usuario
- *         description: Dados do usuário
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
- *               description: Nome do usuário
- *             gender:
- *               type: string
- *               description: Gênero do usuário
- *             cpf:
- *               type: string
- *               description: CPF do usuário
- *             address:
- *               type: string
- *               description: Endereço do usuário
- *             email:
- *               type: string
- *               description: Email do usuário
- *             password:
- *               type: string
- *               description: Senha do usuário
- *             birth:
- *               type: string
- *               format: date
- *               description: Data de nascimento do usuário
- *     responses:
- *       201:
- *         description: Usuário criado com sucesso
- *         schema:
- *           $ref: '#/definitions/Usuario'
- *       400:
- *         description: Erro na validação dos dados
- *       500:
- *         description: Erro ao criar o usuário
- */
-
   try {
     await userSchema.validate(req.body, { abortEarly: false });
 
@@ -145,37 +89,6 @@ userRoute.post("/", async (req, res) => {
   }
 });
 
-userRoute.get("/", async (req, res) => {
-  try {
-    if (req.headers.authorization) {
-      const token = req.headers.authorization.split(" ")[1];
-      const decodedToken = verify(token, process.env.SECRET_JWT);
-
-      if (!decodedToken) {
-        return res.status(401).json({ message: "Token inválido" });
-      }
-
-      const userId = decodedToken.sub;
-      const usuario = await Usuario.findByPk(userId);
-
-      if (!usuario) {
-        return res.status(404).json({ erro: "Usuário não encontrado" });
-      }
-
-      return res.json(usuario);
-    } else {
-      const usuarios = await Usuario.findAll();
-
-      return res.json(usuarios);
-    }
-  } catch (error) {
-    console.log(error.message);
-    return res
-      .status(500)
-      .json({ error: "Não foi possível buscar os usuários" });
-  }
-});
-
 userRoute.get("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -215,22 +128,21 @@ userRoute.put("/:id", auth, async (req, res) => {
         },
       });
       if (existingUserCPF) {
-        return res.status(400).json({ message: "CPF já cadastrado"})
+        return res.status(400).json({ message: "CPF já cadastrado" });
       }
     }
-    
 
-    if (email !== usuario.email){
+    if (email !== usuario.email) {
       const existingUserEmail = await Usuario.findOne({
         where: {
           email: email,
-        }
-      })
+        },
+      });
       if (existingUserEmail) {
-        return res.status(400).json({ message: "Email já cadastrado"})
+        return res.status(400).json({ message: "Email já cadastrado" });
       }
     }
-    
+
     await usuario.update(req.body);
     await usuario.save();
     res.status(200).json({ message: "Alterado com sucesso!" });

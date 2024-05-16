@@ -2,7 +2,6 @@ const express = require("express"); //Framework da aplicação
 const cors = require("cors"); // Biblioteca utilizada para inserir headers http
 const { connection } = require("./database/connection"); // Configuração de acesso ao banco de dados
 const routes = require("./routes/routes");
-const { specs, swaggerUi } = require("./swagger");
 
 const PORT_API = process.env.PORT_API;
 
@@ -32,7 +31,6 @@ class Server {
   }
 
   async initializeServer(app) {
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
     app.listen(PORT_API, () =>
       console.log(`Servidor executando na porta ${PORT_API}`)

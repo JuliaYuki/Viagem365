@@ -1,18 +1,25 @@
-const { verify } = require("jsonwebtoken")
+const { verify } = require("jsonwebtoken");
 
 async function auth(req, res, next) {
     try {
-        const {authorization} = req.headers
+        const authorizationHeader = req.headers.authorization;
 
-        req['payload'] = verify(authorization, process.env.SECRET_JWT)
+        if (!authorizationHeader) {
+            return res.status(401).json({ message: "Token de autorização não fornecido" });
+        }
 
-        next()
+        const token = authorizationHeader.replace("Bearer ", ""); // Remover o prefixo "Bearer"
+
+        req['payload'] = verify(token, process.env.SECRET_JWT);
+
+        next();
+
     } catch (error) {
         return res.status(401).json({
-            message: "A autenticação falhou",
+            message: "Autenticação Falhou!",
             cause: error.message
-        })
+        });
     }
 }
 
-module.exports = {auth}
+module.exports = { auth };
