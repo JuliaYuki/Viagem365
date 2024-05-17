@@ -2,13 +2,14 @@
   "swagger": "2.0",
   "info": {
     "title": "Viagem365 API",
-    "description": "Descrição",
+    "description": "API RESTful para gerenciamento de usuários, login e destinos.",
     "version": "1.0.0"
   },
-  "host": "localhost:300",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "securityDefinitions": {
     "apiKeyAuth": {
@@ -21,36 +22,19 @@
   "paths": {
     "/usuario/": {
       "post": {
-        "description": "",
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Criar um novo usuário",
+        "description": "Cria um novo usuário na base de dados",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
+            "description": "Objeto JSON contendo os dados do usuário",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "gender": {
-                  "example": "any"
-                },
-                "cpf": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "birth": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -69,23 +53,27 @@
     },
     "/usuario/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Obter usuário por ID",
+        "description": "Obtém informações detalhadas sobre um usuário específico",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "string",
+            "format": "int64",
+            "description": "ID do usuário"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -100,31 +88,25 @@
       },
       "put": {
         "description": "",
-        "parameters": [
+        "parameters": [          
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "format": "int64",
+            "description": "ID do usuário"            
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
+            "name": "user",
             "in": "body",
+            "required": true,
+            "type": "string",
+            "format": "int64",
+            "description": "Objeto JSON contendo os dados do usuário",
             "schema": {
-              "type": "object",
-              "properties": {
-                "cpf": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                }
-              }
+              "$ref":"#/definitions/UserUpdate"
+              
             }
           }
         ],
@@ -185,21 +167,25 @@
     },
     "/login/": {
       "post": {
-        "description": "",
+        "tags": [
+          "Login"
+        ],
+        "summary": "Login de usuário",
+        "description": "Autentica um usuário e retorna um token JWT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "login",
+            "description": "Objeto JSON contendo email e senha",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Login"
             }
           }
         ],
@@ -391,6 +377,89 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "João"
+        },
+        "gender": {
+          "type": "string",
+          "example": "M"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "08898845574"
+        },
+        "address": {
+          "type": "string",
+          "example": "Campeche"
+        },
+        "email": {
+          "type": "string",
+          "example": "joao@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "birth": {
+          "type": "string",
+          "format": "date",
+          "example": "1996-12-15"
+        }
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Joana"
+        },
+        "gender": {
+          "type": "string",
+          "example": "F"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "08898845577"
+        },
+        "address": {
+          "type": "string",
+          "example": "Ingleses"
+        },
+        "email": {
+          "type": "string",
+          "example": "joana@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234567"
+        },
+        "birth": {
+          "type": "string",
+          "format": "date",
+          "example": "1996-12-15"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "joao@email.com"
+        },
+        "password":{
+          "type":"string",
+          "example": "123456"
         }
       }
     }
