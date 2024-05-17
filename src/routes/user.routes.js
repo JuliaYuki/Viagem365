@@ -17,6 +17,7 @@ const userSchema = yup.object().shape({
   birth: yup.date().required(),
 });
 
+
 userRoute.post("/", async (req, res) => {
   try {
     await userSchema.validate(req.body, { abortEarly: false });
@@ -92,6 +93,14 @@ userRoute.post("/", async (req, res) => {
 userRoute.get("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
+    const userIdFromToken = req.payload.sub
+
+    if (parseInt(userIdFromToken) !== parseInt(id)) {
+      return res.status(403).json({
+        error: "Você não tem permissão para visualizar este usuário"
+      })
+    }
+
     const usuario = await Usuario.findByPk(id);
 
     if (!usuario) {
@@ -111,6 +120,14 @@ userRoute.get("/:id", auth, async (req, res) => {
 userRoute.put("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
+    const userIdFromToken = req.payload.sub; // Obter o ID do usuário autenticado
+
+    if (parseInt(userIdFromToken) !== parseInt(id)) {
+      return res.status(403).json({
+        error: "Você não tem permissão para editar este usuário.",
+      });
+    }
+
     const { cpf, email } = req.body;
 
     await userSchema.validate(req.body, { abortEarly: false });
@@ -163,17 +180,15 @@ userRoute.put("/:id", auth, async (req, res) => {
 userRoute.delete("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
+    const userIdFromToken = req.payload.sub; // Obter o ID do usuário autenticado
 
-    const userIdFromToken = req.payload.sub;
-    const userIdToDelete = req.params.id;
-
-    if (parseInt(userIdFromToken) !== parseInt(userIdToDelete)) {
-      return res
-        .status(403)
-        .json({ error: "Você não tem permissão para excluir este usuário!" });
+    if (parseInt(userIdFromToken) !== parseInt(id)) {
+      return res.status(403).json({
+        error: "Você não tem permissão para excluir este usuário.",
+      });
     }
 
-    const usuario = await Usuario.findByPk(userIdToDelete);
+    const usuario = await Usuario.findByPk(id);
 
     if (!usuario) {
       return res.status(404).json({ erro: "Usuário não foi encontrado" });
@@ -193,7 +208,7 @@ userRoute.delete("/:id", auth, async (req, res) => {
 
     await Usuario.destroy({
       where: {
-        id: userIdToDelete,
+        id: id,
       },
     });
 
