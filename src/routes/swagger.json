@@ -1,0 +1,469 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Viagem365 API",
+    "description": "API RESTful para gerenciamento de usuários, login e destinos.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "authorization",
+      "description": "Token de Autenticação"
+    }
+  },
+  "paths": {
+    "/usuario/": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Criar um novo usuário",
+        "description": "Cria um novo usuário na base de dados",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto JSON contendo os dados do usuário",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuario/{id}": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Obter usuário por ID",
+        "description": "Obtém informações detalhadas sobre um usuário específico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64",
+            "description": "ID do usuário"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Usuários"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64",
+            "description": "ID do usuário"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "format": "int64",
+            "description": "Objeto JSON contendo os dados do usuário",
+            "schema": {
+              "$ref": "#/definitions/UserUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Usuários"],
+        "summary": "Excluir usuário",
+        "description": "Exclui um usuário da base de dados",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do usuário.",
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login/": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Login de usuário",
+        "description": "Autentica um usuário e retorna um token JWT",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "login",
+            "description": "Objeto JSON contendo email e senha",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token JWT gerado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6ImpvYW9AZW1haWwuY29tIiwibmFtZSI6Ikpvw6NvIiwiaWF0IjoxNzE1OTE0OTA1fQ.HPiCK97hXVfKUou2YLFHtv9Xx8gWRc8F-EGJNJap1tS"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/destino/": {
+      "post": {
+        "tags": ["Destinos"],
+        "summary": "Criar um novo destino",
+        "description": "Cria um novo destino na base de dados.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "destino",
+            "in": "body",
+            "description": "Objeto JSON contendo os dados do destino.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Destination"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/destino/{destino_id}": {
+      "get": {
+        "tags": ["Destinos"],
+        "summary": "Obter destino por ID",
+        "description": "Obtém informações detalhadas sobre um destino específico.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destino encontrado",
+            "schema": {
+              "$ref": "#/definitions/Destination"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Destinos"],
+        "summary": "Atualizar destino",
+        "description": "Atualiza as informações de um destino.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "destination",
+            "description": "Objeto JSON contendo os dados do destino.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DestinationUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destino atualizado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Destination"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Destinos"],
+        "summary": "Excluir destino",
+        "description": "Exclui um destino da base de dados.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "João"
+        },
+        "gender": {
+          "type": "string",
+          "example": "M"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "08898845574"
+        },
+        "address": {
+          "type": "string",
+          "example": "Campeche"
+        },
+        "email": {
+          "type": "string",
+          "example": "joao@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "birth": {
+          "type": "string",
+          "format": "date",
+          "example": "1996-12-15"
+        }
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Joana"
+        },
+        "gender": {
+          "type": "string",
+          "example": "F"
+        },
+        "cpf": {
+          "type": "string",
+          "example": "08898845577"
+        },
+        "address": {
+          "type": "string",
+          "example": "Ingleses"
+        },
+        "email": {
+          "type": "string",
+          "example": "joana@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234567"
+        },
+        "birth": {
+          "type": "string",
+          "format": "date",
+          "example": "1996-12-15"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "joao@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "Destination": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "example": ""
+        },
+        "description": {
+          "type": "string",
+          "example": ""
+        },
+        "cep": {
+          "type": "string",
+          "example": ""
+        }
+      }
+    },
+    "DestinationUpdate": {
+      "type": "object",
+      "properties": {
+        "destination": { 
+          "type": "string",
+          "example": ""
+        },
+        "description": {
+          "type":"string",
+          "example": ""
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ]
+}

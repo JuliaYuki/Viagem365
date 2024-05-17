@@ -2,34 +2,34 @@ const { DataTypes } = require("sequelize");
 const { connection } = require("../database/connection");
 
 const Usuario = connection.define("usuario", {
-  nome: {
+  name: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
   },
-  genero: {
+  gender: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
   },
-  CPF: {
+  cpf: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
   },
-  data_nascimento: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  endereco: {
+  address: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
   },
   email: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
   },
   password: {
+    allowNull: false,
     type: DataTypes.STRING,
-    allowNull: false
-  }
+  },
+  birth: {
+    allowNull: false,
+    type: DataTypes.DATE,
+  },
 });
 
 module.exports = Usuario;
