@@ -3,7 +3,6 @@ const { verify } = require("jsonwebtoken");
 async function auth(req, res, next) {
     try {
         const authorizationHeader = req.headers.authorization;
-
         if (!authorizationHeader) {
             return res.status(401).json({ message: "Token de autorização não fornecido" });
         }
