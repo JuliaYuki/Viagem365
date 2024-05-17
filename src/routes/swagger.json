@@ -7,10 +7,7 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "securityDefinitions": {
     "apiKeyAuth": {
       "type": "apiKey",
@@ -22,9 +19,7 @@
   "paths": {
     "/usuario/": {
       "post": {
-        "tags": [
-          "Usuários"
-        ],
+        "tags": ["Usuários"],
         "summary": "Criar um novo usuário",
         "description": "Cria um novo usuário na base de dados",
         "parameters": [
@@ -53,9 +48,7 @@
     },
     "/usuario/{id}": {
       "get": {
-        "tags": [
-          "Usuários"
-        ],
+        "tags": ["Usuários"],
         "summary": "Obter usuário por ID",
         "description": "Obtém informações detalhadas sobre um usuário específico",
         "parameters": [
@@ -78,6 +71,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -87,15 +83,16 @@
         }
       },
       "put": {
+        "tags": ["Usuários"],
         "description": "",
-        "parameters": [          
+        "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
             "format": "int64",
-            "description": "ID do usuário"            
+            "description": "ID do usuário"
           },
           {
             "name": "user",
@@ -105,8 +102,7 @@
             "format": "int64",
             "description": "Objeto JSON contendo os dados do usuário",
             "schema": {
-              "$ref":"#/definitions/UserUpdate"
-              
+              "$ref": "#/definitions/UserUpdate"
             }
           }
         ],
@@ -120,6 +116,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -129,18 +128,17 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["Usuários"],
+        "summary": "Excluir usuário",
+        "description": "Exclui um usuário da base de dados",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "description": "ID do usuário.",
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "responses": {
@@ -167,17 +165,11 @@
     },
     "/login/": {
       "post": {
-        "tags": [
-          "Login"
-        ],
+        "tags": ["Login"],
         "summary": "Login de usuário",
         "description": "Autentica um usuário e retorna um token JWT",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -191,7 +183,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Token JWT gerado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6ImpvYW9AZW1haWwuY29tIiwibmFtZSI6Ikpvw6NvIiwiaWF0IjoxNzE1OTE0OTA1fQ.HPiCK97hXVfKUou2YLFHtv9Xx8gWRc8F-EGJNJap1tS"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -207,29 +208,19 @@
     },
     "/destino/": {
       "post": {
-        "description": "",
+        "tags": ["Destinos"],
+        "summary": "Criar um novo destino",
+        "description": "Cria um novo destino na base de dados.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
+            "name": "destino",
             "in": "body",
+            "description": "Objeto JSON contendo os dados do destino.",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "destination": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                },
-                "cep": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Destination"
             }
           }
         ],
@@ -250,48 +241,29 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
     },
     "/destino/{destino_id}": {
       "get": {
-        "description": "",
+        "tags": ["Destinos"],
+        "summary": "Obter destino por ID",
+        "description": "Obtém informações detalhadas sobre um destino específico.",
         "parameters": [
           {
-            "name": "destino_id",
             "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Destino encontrado",
+            "schema": {
+              "$ref": "#/definitions/Destination"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -305,38 +277,34 @@
         }
       },
       "put": {
-        "description": "",
+        "tags": ["Destinos"],
+        "summary": "Atualizar destino",
+        "description": "Atualiza as informações de um destino.",
         "parameters": [
           {
-            "name": "destino_id",
             "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "body",
             "in": "body",
+            "name": "destination",
+            "description": "Objeto JSON contendo os dados do destino.",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "destination": {
-                  "example": "any"
-                },
-                "description": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/DestinationUpdate"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Destino atualizado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Destination"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -350,18 +318,17 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": ["Destinos"],
+        "summary": "Excluir destino",
+        "description": "Exclui um destino da base de dados.",
         "parameters": [
           {
-            "name": "destino_id",
             "in": "path",
+            "name": "destino_id",
+            "description": "ID do destino.",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "responses": {
@@ -457,9 +424,39 @@
           "type": "string",
           "example": "joao@email.com"
         },
-        "password":{
-          "type":"string",
+        "password": {
+          "type": "string",
           "example": "123456"
+        }
+      }
+    },
+    "Destination": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "example": ""
+        },
+        "description": {
+          "type": "string",
+          "example": ""
+        },
+        "cep": {
+          "type": "string",
+          "example": ""
+        }
+      }
+    },
+    "DestinationUpdate": {
+      "type": "object",
+      "properties": {
+        "destination": { 
+          "type": "string",
+          "example": ""
+        },
+        "description": {
+          "type":"string",
+          "example": ""
         }
       }
     }
