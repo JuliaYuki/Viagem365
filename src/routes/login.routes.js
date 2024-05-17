@@ -5,52 +5,6 @@ const { sign } = require("jsonwebtoken");
 
 const loginRoutes = new Router();
 
-/**
- * @swagger
- * tags:
- *   name: Login
- *   description: Rotas para autenticação
- */
-
-/**
- * @swagger
- * /login:
- *   post:
- *     summary: Autenticação de usuário
- *     tags: [Login]
- *     consumes:
- *       - application/json
- *     parameters:
- *       - in: body
- *         name: credenciais
- *         description: Credenciais de login
- *         schema:
- *           type: object
- *           properties:
- *             email:
- *               type: string
- *               description: Email do usuário
- *             password:
- *               type: string
- *               description: Senha do usuário
- *     responses:
- *       200:
- *         description: Token JWT gerado
- *         schema:
- *           type: object
- *           properties:
- *             Token:
- *               type: string
- *               description: Token JWT
- *       400:
- *         description: Erro na validação dos dados
- *       404:
- *         description: Usuário não encontrado
- *       500:
- *         description: Erro ao autenticar o usuário
- */
-
-
 loginRoutes.post("/", async (req, res) => {
 
     try {
