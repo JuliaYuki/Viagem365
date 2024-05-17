@@ -16,7 +16,6 @@ const doc = {
     },
   },
 };
-
 const outputFile = "./src/routes/swagger.json";
 const routes = ["./src/server.js"];
 
